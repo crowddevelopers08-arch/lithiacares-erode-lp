@@ -67,7 +67,7 @@ async function sendToTeleCRM(data: LeadInput) {
       name: data.name.trim(),
       email: '',
       phone: data.phone.replace(/\D/g, ''),
-      city_1: data.location?.trim() || 'Brough Rd, Erode',
+      city_1: data.location?.trim() || 'Erode',
       preferredtime: '',
       preferreddate: '',
       message: `Consultation enquiry – ${data.treatment || 'Skin Treatment'} at Le Thia Cares`,
@@ -85,7 +85,7 @@ async function sendToTeleCRM(data: LeadInput) {
     actions: [
       { type: 'SYSTEM_NOTE', text: `Lead Source: ${data.pageUrl || data.source || 'le-thia-cares-erode-website'}` },
       { type: 'SYSTEM_NOTE', text: `Treatment: ${data.treatment || 'Not specified'}` },
-      { type: 'SYSTEM_NOTE', text: `Location: ${data.location || 'Brough Rd, Erode'}` },
+      { type: 'SYSTEM_NOTE', text: `Location: ${data.location || 'Erode'}` },
       { type: 'SYSTEM_NOTE', text: 'Consent Given: Yes' },
     ],
   };

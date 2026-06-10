@@ -69,7 +69,7 @@ export function Footer() {
             <div className="flex items-start gap-3">
               <span className="material-symbols-outlined text-[20px] text-[#492e3b]">location_on</span>
               <span className="text-[14px] leading-[1.6] text-[#4e4448]">
-                Arun Complex, Brough Rd,<br />near Kalaimagal School,<br />Kaikolar Thottam, Erode,<br />Tamil Nadu 638001
+                Arun Complex,<br />near Kalaimagal School,<br />Kaikolar Thottam, Erode,<br />Tamil Nadu 638001
               </span>
             </div>
             <a href="tel:+919342369259" className="group flex items-center gap-3">

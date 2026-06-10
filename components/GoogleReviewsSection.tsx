@@ -7,7 +7,7 @@ const reviews = [
   {
     initials: 'RM',
     name: 'Rebekha Mahima',
-    text: `"I visited Le Thia Cares, Brough Rd, Erode, for a facial and had a wonderful experience. The staff were polite, explained everything clearly,!"`,
+    text: `"I visited Le Thia Cares, Erode, for a facial and had a wonderful experience. The staff were polite, explained everything clearly,!"`,
   },
   {
     initials: 'TR',

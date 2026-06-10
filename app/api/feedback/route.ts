@@ -57,7 +57,7 @@ async function sendFeedbackToTeleCRM(data: FeedbackInput) {
       name: data.name.trim(),
       email: data.email.trim(),
       phone: data.phone.replace(/\D/g, ''),
-      city_1: 'Brough Rd, Erode',
+      city_1: 'Erode',
       message: `Client feedback: ${data.suggestions.trim()}`,
       Country: 'India',
       LeadID: '',

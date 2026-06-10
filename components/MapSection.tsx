@@ -9,7 +9,7 @@
               Visit Us
             </p>
             <p className="mt-1 text-[16px] font-medium text-white">
-              Le Thia Cares — Brough Rd, Erode
+              Le Thia Cares — Erode
             </p>
           </div>
           <div className="flex flex-wrap gap-4">

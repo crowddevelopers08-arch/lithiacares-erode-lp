@@ -174,63 +174,157 @@ function CountdownTimer() {
 function OfferCardsGrid() {
   const [activeCard, setActiveCard] = useState(0);
   const [shimmerKey, setShimmerKey] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  useEffect(() => {
-    const id = setInterval(() => {
+  function startAutoPlay() {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
       setActiveCard(prev => (prev + 1) % offerImages.length);
       setShimmerKey(k => k + 1);
-    }, 1500);
-    return () => clearInterval(id);
+    }, 3000);
+  }
+
+  useEffect(() => {
+    startAutoPlay();
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  function handleManualNav(index: number) {
+    setActiveCard(index);
+    setShimmerKey(k => k + 1);
+    startAutoPlay(); // reset timer on manual interaction
+  }
+
+  function handleTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX;
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    touchStartX.current = null;
+    if (Math.abs(diff) < 40) return; // ignore tiny taps
+    if (diff > 0) {
+      handleManualNav((activeCard + 1) % offerImages.length);   // swipe left → next
+    } else {
+      handleManualNav((activeCard - 1 + offerImages.length) % offerImages.length); // swipe right → prev
+    }
+  }
+
   return (
-    <div className="mx-auto mb-8 grid max-w-[960px] grid-cols-1 gap-4 sm:grid-cols-3 md:mb-10 md:gap-6 lg:mb-14 lg:gap-8">
-      {offerImages.map((img, index) => {
-        const isActive = index === activeCard;
-        return (
+    <div className="mx-auto mb-8 max-w-[960px] md:mb-10 lg:mb-14">
+
+      {/* ── Mobile carousel (hidden on sm+) ── */}
+      <div className="sm:hidden px-4">
+        <div
+          className="relative overflow-hidden rounded-xl"
+          style={{
+            boxShadow: '0 0 0 2.5px #ff6b00, 0 0 20px 6px rgba(255,107,0,0.55), 0 0 40px 10px rgba(255,69,0,0.3)',
+          }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Shimmer sweep on the visible frame */}
           <div
-            key={index}
-            style={{
-              position: 'relative',
-              borderRadius: '0.75rem',
-              overflow: 'hidden',
-              transform: isActive ? 'scale(1.06)' : 'scale(1)',
-              filter: isActive ? 'brightness(1.15)' : 'brightness(1)',
-              transition: 'transform 0.5s cubic-bezier(0.34,1.28,0.64,1), filter 0.5s ease, box-shadow 0.5s ease',
-              zIndex: isActive ? 2 : 1,
-              boxShadow: isActive
-                ? '0 0 0 2.5px #ff6b00, 0 0 20px 6px rgba(255,107,0,0.55), 0 0 40px 10px rgba(255,69,0,0.3)'
-                : '0 0 0 2.5px transparent',
-            }}
+            key={shimmerKey}
+            className="cinema-shimmer-fire pointer-events-none absolute inset-0 z-10"
+            style={{ background: 'linear-gradient(105deg, transparent 30%, rgba(255,160,60,0.35) 50%, transparent 70%)' }}
+          />
+
+          {/* Sliding track */}
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${activeCard * 100}%)` }}
           >
-            {isActive && (
-              <div
-                key={shimmerKey}
-                className="cinema-shimmer-fire"
-                style={{
-                  position: 'absolute', inset: 0, zIndex: 10, pointerEvents: 'none',
-                  background: 'linear-gradient(105deg, transparent 30%, rgba(255,160,60,0.35) 50%, transparent 70%)',
-                }}
-              />
-            )}
-            <div style={{
-              position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)',
-              display: 'flex', gap: 5, zIndex: 20, pointerEvents: 'none',
-            }}>
-              {offerImages.map((_, di) => (
-                <span key={di} style={{
-                  display: 'block', width: 6, height: 6, borderRadius: '50%',
-                  background: di === activeCard ? '#ff6b00' : 'rgba(255,255,255,0.4)',
-                  boxShadow: di === activeCard ? '0 0 6px 2px #ff6b00' : 'none',
-                  animation: di === activeCard ? 'dot-fire 1s ease-in-out infinite' : 'none',
-                  transition: 'background 0.4s ease',
-                }} />
-              ))}
-            </div>
-            <Image src={img.src} alt={img.alt} width={600} height={600} className="h-auto w-full object-cover" />
+            {offerImages.map((img, index) => (
+              <div key={index} className="min-w-full">
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  width={600}
+                  height={600}
+                  className="h-auto w-full object-cover"
+                />
+              </div>
+            ))}
           </div>
-        );
-      })}
+        </div>
+
+        {/* Dot / pill indicators */}
+        <div className="mt-4 flex justify-center gap-2">
+          {offerImages.map((_, di) => (
+            <button
+              key={di}
+              onClick={() => handleManualNav(di)}
+              aria-label={`Go to slide ${di + 1}`}
+              style={{
+                width: di === activeCard ? 22 : 8,
+                height: 8,
+                borderRadius: 4,
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer',
+                background: di === activeCard ? '#ff6b00' : 'rgba(255,255,255,0.25)',
+                boxShadow: di === activeCard ? '0 0 6px 2px #ff6b00' : 'none',
+                transition: 'all 0.35s ease',
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* ── Desktop 3-col grid (hidden below sm) ── */}
+      <div className="hidden sm:grid grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+        {offerImages.map((img, index) => {
+          const isActive = index === activeCard;
+          return (
+            <div
+              key={index}
+              style={{
+                position: 'relative',
+                borderRadius: '0.75rem',
+                overflow: 'hidden',
+                transform: isActive ? 'scale(1.06)' : 'scale(1)',
+                filter: isActive ? 'brightness(1.15)' : 'brightness(1)',
+                transition: 'transform 0.5s cubic-bezier(0.34,1.28,0.64,1), filter 0.5s ease, box-shadow 0.5s ease',
+                zIndex: isActive ? 2 : 1,
+                boxShadow: isActive
+                  ? '0 0 0 2.5px #ff6b00, 0 0 20px 6px rgba(255,107,0,0.55), 0 0 40px 10px rgba(255,69,0,0.3)'
+                  : '0 0 0 2.5px transparent',
+              }}
+            >
+              {isActive && (
+                <div
+                  key={shimmerKey}
+                  className="cinema-shimmer-fire"
+                  style={{
+                    position: 'absolute', inset: 0, zIndex: 10, pointerEvents: 'none',
+                    background: 'linear-gradient(105deg, transparent 30%, rgba(255,160,60,0.35) 50%, transparent 70%)',
+                  }}
+                />
+              )}
+              <div style={{
+                position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)',
+                display: 'flex', gap: 5, zIndex: 20, pointerEvents: 'none',
+              }}>
+                {offerImages.map((_, di) => (
+                  <span key={di} style={{
+                    display: 'block', width: 6, height: 6, borderRadius: '50%',
+                    background: di === activeCard ? '#ff6b00' : 'rgba(255,255,255,0.4)',
+                    boxShadow: di === activeCard ? '0 0 6px 2px #ff6b00' : 'none',
+                    animation: di === activeCard ? 'dot-fire 1s ease-in-out infinite' : 'none',
+                    transition: 'background 0.4s ease',
+                  }} />
+                ))}
+              </div>
+              <Image src={img.src} alt={img.alt} width={600} height={600} className="h-auto w-full object-cover" />
+            </div>
+          );
+        })}
+      </div>
+
     </div>
   );
 }

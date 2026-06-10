@@ -88,7 +88,7 @@ export function HeroSection() {
             Book your appointments at
           </span>
           <h1 className="hero-anim-title font-display text-[28px] font-medium leading-[1.2] text-[#1a1c1b] sm:text-[36px] md:text-[52px] md:font-semibold md:leading-[1.1] md:tracking-[-0.02em] lg:text-[64px]">
-            Best Skin Clinic in Brough Rd, Erode
+            Best Skin Clinic in Erode
           </h1>
           <p className="hero-anim-desc mx-auto max-w-lg text-[16px] font-normal leading-[1.6] text-[#4e4448] md:mx-0 md:text-[18px]">
             we provide quality skin treatments at affordable prices without compromising on care and safety.
