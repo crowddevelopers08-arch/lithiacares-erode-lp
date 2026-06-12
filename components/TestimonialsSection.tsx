@@ -1,23 +1,27 @@
-﻿'use client';
+'use client';
 import { AnimateOnScroll } from '@/components/AnimateOnScroll';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { WaveText } from '@/components/WaveText';
 
 const videos = [
   {
-    url: 'https://res.cloudinary.com/djzexkvyv/video/upload/v1779340499/Chennai_cilent_1_hl2fzf.mp4',
+    url: 'https://res.cloudinary.com/dthj7fakc/video/upload/v1781258224/lathia-vi-4_odmssz.mp4',
     title: 'Erode Client Testimonial 1',
   },
   {
-    url: 'https://res.cloudinary.com/djzexkvyv/video/upload/v1779340496/Chennai_cilent_2_ny4y6g.mp4',
+    url: 'https://res.cloudinary.com/dthj7fakc/video/upload/v1781258223/lathia-vi-3_gtjnaj.mp4',
     title: 'Erode Client Testimonial 2',
   },
   {
-    url: 'https://res.cloudinary.com/djzexkvyv/video/upload/v1779340498/Tiruppur_Feedback_Video_is8xg1.mp4',
+    url: 'https://res.cloudinary.com/dthj7fakc/video/upload/v1781258222/lathia-vi-2_xicl3n.mp4',
     title: 'Tiruppur Client Feedback',
   },
   {
-    url: 'https://res.cloudinary.com/djzexkvyv/video/upload/v1779340497/Tiruppur_Happy_Customer_Video_x6l6wk.mp4',
+    url: 'https://res.cloudinary.com/dthj7fakc/video/upload/v1781258221/lathia-vi-1_dktwbi.mp4',
+    title: 'Tiruppur Happy Customer',
+  },
+  {
+    url: 'https://res.cloudinary.com/dthj7fakc/video/upload/v1781261148/lathia-vi-5_un9gdh.mp4',
     title: 'Tiruppur Happy Customer',
   },
 ];
@@ -34,6 +38,10 @@ export function TestimonialsSection() {
     }, 3000);
   }, []);
 
+  const stopTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+  }, []);
+
   useEffect(() => {
     startTimer();
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
@@ -41,6 +49,21 @@ export function TestimonialsSection() {
 
   const prev = () => { setCurrent(c => (c - 1 + videos.length) % videos.length); startTimer(); };
   const next = () => { setCurrent(c => (c + 1) % videos.length); startTimer(); };
+
+  const prevIdx = (current - 1 + videos.length) % videos.length;
+  const nextIdx = (current + 1) % videos.length;
+
+  const dots = (
+    <div className="mt-5 flex items-center justify-center gap-2">
+      {videos.map((_, i) => (
+        <button
+          key={i}
+          onClick={() => { setCurrent(i); startTimer(); }}
+          className={`h-2 rounded-full transition-all duration-300 ${i === current ? 'w-6 bg-[#492e3b]' : 'w-2 bg-[#c9b2ba]'}`}
+        />
+      ))}
+    </div>
+  );
 
   return (
     <section id="testimonials" className="px-4 py-10 sm:px-6 md:px-[80px] md:py-14 lg:py-20 xl:py-24">
@@ -57,67 +80,118 @@ export function TestimonialsSection() {
         </div>
       </AnimateOnScroll>
 
-      {/* Mobile carousel — hidden on md+ */}
-      <div
-        className="mx-auto mb-8 max-w-[1280px] md:hidden"
-        onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
-        onTouchEnd={e => {
-          if (touchStartX.current === null) return;
-          const diff = touchStartX.current - e.changedTouches[0].clientX;
-          if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
-          touchStartX.current = null;
-        }}
-      >
-        <div className="relative mx-auto w-[320px] overflow-hidden rounded-[0.5rem] bg-black shadow-lg" style={{ height: '560px' }}>
-          <video
-            key={videos[current].url}
-            src={videos[current].url}
-            controls
-            playsInline
-            preload="metadata"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="mt-4 flex items-center justify-center gap-4">
+      {/* Mobile — single video carousel (hidden on md+) */}
+      <AnimateOnScroll animation="fade-up" delay={150} className="mx-auto mb-8 max-w-[1280px] md:hidden md:mb-10 lg:mb-14">
+        <div
+          className="relative"
+          onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+          onTouchEnd={e => {
+            if (touchStartX.current === null) return;
+            const diff = touchStartX.current - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+            touchStartX.current = null;
+          }}
+        >
+          <div className="relative mx-auto w-[320px] overflow-hidden rounded-[0.5rem] bg-black shadow-lg" style={{ height: '560px' }}>
+            <video
+              key={videos[current].url}
+              src={videos[current].url}
+              controls
+              playsInline
+              preload="metadata"
+              className="w-full h-full object-cover"
+              onPlay={stopTimer}
+              onPause={startTimer}
+              onEnded={startTimer}
+            />
+          </div>
           <button
             onClick={prev}
-            className="btn-icon flex h-8 w-8 items-center justify-center rounded-full border border-[#492e3b] text-[#492e3b] hover:bg-[#492e3b] hover:text-white"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 btn-icon flex h-9 w-9 items-center justify-center rounded-full border border-[#492e3b] bg-white text-[#492e3b] shadow-md hover:bg-[#492e3b] hover:text-white transition-colors"
             aria-label="Previous"
           >
             <span className="material-symbols-outlined text-[18px]">chevron_left</span>
           </button>
-          <div className="flex gap-2">
-            {videos.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => { setCurrent(i); startTimer(); }}
-                className={`h-2 rounded-full transition-all duration-300 ${i === current ? 'w-6 bg-[#492e3b]' : 'w-2 bg-[#c9b2ba]'}`}
-              />
-            ))}
-          </div>
           <button
             onClick={next}
-            className="btn-icon flex h-8 w-8 items-center justify-center rounded-full border border-[#492e3b] text-[#492e3b] hover:bg-[#492e3b] hover:text-white"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 btn-icon flex h-9 w-9 items-center justify-center rounded-full border border-[#492e3b] bg-white text-[#492e3b] shadow-md hover:bg-[#492e3b] hover:text-white transition-colors"
             aria-label="Next"
           >
             <span className="material-symbols-outlined text-[18px]">chevron_right</span>
           </button>
         </div>
-      </div>
+        {dots}
+      </AnimateOnScroll>
 
-      {/* Desktop grid — hidden on mobile */}
-      <AnimateOnScroll animation="fade-up" delay={150} className="mx-auto mb-8 hidden max-w-[1280px] gap-5 md:mb-10 md:grid md:grid-cols-2 md:gap-8 lg:mb-14 xl:grid-cols-4">
-        {videos.map((video, i) => (
-          <div key={i} className="relative overflow-hidden rounded-[0.5rem] bg-black shadow-lg" style={{ height: '560px' }}>
-            <video
-              src={video.url}
-              controls
-              playsInline
-              preload="metadata"
-              className="w-full h-full object-cover"
-            />
+      {/* Desktop — 3-video carousel (hidden on mobile) */}
+      <AnimateOnScroll animation="fade-up" delay={150} className="mx-auto mb-8 hidden max-w-[1280px] md:block md:mb-10 lg:mb-14">
+        <div className="relative">
+          <div className="flex items-center justify-center gap-5 lg:gap-6">
+            {/* Previous video */}
+            <div
+              className="flex-shrink-0 cursor-pointer overflow-hidden rounded-[0.5rem] bg-black shadow-md opacity-50 transition-all duration-300 hover:opacity-70 w-[200px] lg:w-[240px]"
+              style={{ height: '420px' }}
+              onClick={prev}
+            >
+              <video
+                key={videos[prevIdx].url}
+                src={videos[prevIdx].url}
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover pointer-events-none"
+              />
+            </div>
+
+            {/* Center video — highlighted */}
+            <div
+              className="flex-shrink-0 overflow-hidden rounded-[0.5rem] bg-black shadow-xl ring-2 ring-[#492e3b] transition-all duration-300 w-[280px] lg:w-[320px]"
+              style={{ height: '560px' }}
+            >
+              <video
+                key={videos[current].url}
+                src={videos[current].url}
+                controls
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover"
+                onPlay={stopTimer}
+                onPause={startTimer}
+                onEnded={startTimer}
+              />
+            </div>
+
+            {/* Next video */}
+            <div
+              className="flex-shrink-0 cursor-pointer overflow-hidden rounded-[0.5rem] bg-black shadow-md opacity-50 transition-all duration-300 hover:opacity-70 w-[200px] lg:w-[240px]"
+              style={{ height: '420px' }}
+              onClick={next}
+            >
+              <video
+                key={videos[nextIdx].url}
+                src={videos[nextIdx].url}
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover pointer-events-none"
+              />
+            </div>
           </div>
-        ))}
+
+          <button
+            onClick={prev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 btn-icon flex h-9 w-9 items-center justify-center rounded-full border border-[#492e3b] bg-white text-[#492e3b] shadow-md hover:bg-[#492e3b] hover:text-white transition-colors"
+            aria-label="Previous"
+          >
+            <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 btn-icon flex h-9 w-9 items-center justify-center rounded-full border border-[#492e3b] bg-white text-[#492e3b] shadow-md hover:bg-[#492e3b] hover:text-white transition-colors"
+            aria-label="Next"
+          >
+            <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+          </button>
+        </div>
+        {dots}
       </AnimateOnScroll>
 
       <AnimateOnScroll animation="fade-up" delay={300} className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
