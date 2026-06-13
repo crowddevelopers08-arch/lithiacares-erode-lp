@@ -46,6 +46,27 @@ const treatments = [
       'For dull skin, uneven tone, tanning, pigmentation, and lack of glow, Skin Whitening and Skin Brightening Treatment in Erode helps support a clearer, brighter-looking complexion. The treatment plan is customized after skin analysis for safer and more suitable results.',
     image: 'https://res.cloudinary.com/djzexkvyv/image/upload/v1779521620/skin-whitening_nu1tab.webp',
   },
+    {
+    number: '07',
+    name: 'GFC Hair Treatment',
+    description:
+      'GFC Hair Treatment is a doctor-guided hair restoration therapy designed to support hair growth, improve hair density, and reduce hair fall in suitable candidates. It is recommended after scalp analysis to understand your hair fall stage and create a personalized treatment plan.',
+    image: 'https://res.cloudinary.com/djzexkvyv/image/upload/v1781333037/gfc_fy0viw.jpg',
+  },
+  {
+    number: '08',
+    name: 'Hair Regrowth Therapy',
+    description:
+      'Hair Regrowth Therapy helps people dealing with hair fall, thinning hair, low hair density, and early-stage baldness. At the clinic, the treatment plan is suggested after proper scalp evaluation, helping you choose the right option instead of trying random products or home remedies.',
+    image: 'https://res.cloudinary.com/djzexkvyv/image/upload/v1781333038/hairregrowth_gmsuvr.jpg',
+  },
+   {
+    number: '09',
+    name: 'Dandruff Treatment for Itchy Scalp',
+    description:
+      'Dandruff treatment helps manage scalp flaking, itching, dryness, oiliness, and recurring scalp irritation. A doctor-guided scalp check helps identify the cause of dandruff and suggests a suitable treatment plan for a cleaner, healthier scalp.',
+    image: 'https://res.cloudinary.com/djzexkvyv/image/upload/v1781333040/Dandruff-and-Itchy-Scalp_vukrqf.png',
+  },
 ];
 
 function TreatmentCard({ t }: { t: typeof treatments[0] }) {
