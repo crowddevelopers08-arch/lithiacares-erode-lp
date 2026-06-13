@@ -6,42 +6,42 @@ import { AnimateOnScroll } from '@/components/AnimateOnScroll';
 const treatments = [
   {
     number: '01',
-    name: 'Laser Hair Reduction in Erode',
+    name: 'Laser Hair Reduction',
     description:
       'Reduce unwanted hair on the face, underarms, hands, legs, and body with Laser Hair Reduction in Erode. A clinic-based LHR treatment helps reduce frequent threading, waxing, shaving, razor bumps, and grooming discomfort with a doctor-guided session plan.',
     image: 'https://res.cloudinary.com/djzexkvyv/image/upload/v1779521620/laser-hair-removal_oii7ea.webp',
   },
   {
     number: '02',
-    name: 'Glutathione IV in Erode',
+    name: 'Glutathione IV',
     description:
       'Glutathione IV treatment in Erode is designed for people looking for brighter-looking, fresher, and more even-toned skin. At Le Thia Cares, the treatment is planned after skin assessment to support skin radiance, glow, and overall skin quality.',
     image: 'https://res.cloudinary.com/djzexkvyv/image/upload/v1779521620/Skin_whitening_pgtbvh.webp',
   },
   {
     number: '03',
-    name: 'Chemical Peel Treatment in Erode',
+    name: 'Chemical Peel Treatment',
     description:
       'Improve dull skin, tanning, pigmentation, acne marks, uneven skin tone, and rough texture with Chemical Peel Treatment in Erode. The peel type is selected based on your skin concern, helping support clearer, smoother, and more refreshed-looking skin.',
     image: 'https://res.cloudinary.com/djzexkvyv/image/upload/v1779521620/Chemical-Peel_hwqdai.jpg',
   },
   {
     number: '04',
-    name: 'Carbon Laser Facial in Erode',
+    name: 'Carbon Laser Facial',
     description:
       'Carbon Laser Facial in Erode is a popular skin rejuvenation treatment for oily skin, dullness, open pores, tanning, and uneven texture. It helps refresh the skin, improve clarity, and support a cleaner, smoother appearance with clinic-based laser care.',
     image: 'https://res.cloudinary.com/djzexkvyv/image/upload/v1779521620/Laser-Carbon-Peel_fgal94.webp',
   },
   {
     number: '05',
-    name: 'HydraFacial in Erode',
+    name: 'HydraFacial',
     description:
       'Get deep cleansing, hydration, and instant freshness with HydraFacial in Erode. This treatment is suitable for dull, tired, dehydrated, and congested skin, helping improve glow, skin freshness, and smoothness before events or as regular skin maintenance.',
     image: 'https://res.cloudinary.com/djzexkvyv/image/upload/v1779521620/Hydra-Facial-Price-in-India_mwsrxf.jpg',
   },
   {
     number: '06',
-    name: 'Skin Whitening / Skin Brightening Treatment in Erode',
+    name: 'Skin Whitening / Skin Brightening Treatment',
     description:
       'For dull skin, uneven tone, tanning, pigmentation, and lack of glow, Skin Whitening and Skin Brightening Treatment in Erode helps support a clearer, brighter-looking complexion. The treatment plan is customized after skin analysis for safer and more suitable results.',
     image: 'https://res.cloudinary.com/djzexkvyv/image/upload/v1779521620/skin-whitening_nu1tab.webp',
