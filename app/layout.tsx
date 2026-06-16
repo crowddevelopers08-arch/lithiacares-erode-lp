@@ -43,7 +43,7 @@ export default function RootLayout({
       <body
         className={`${manrope.variable} ${playfair.variable} font-body selection:bg-[#624452] selection:text-[#dbb3c4]`}
       >
-        {/* Google tag (gtag.js) */}
+        {/* Google tag (gtag.js) - G-M69HFE888C */}
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-M69HFE888C"
@@ -55,6 +55,21 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-M69HFE888C');
+          `}
+        </Script>
+
+        {/* Google tag (gtag.js) - G-E773P39T64 */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-E773P39T64"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics-2" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-E773P39T64');
           `}
         </Script>
 
