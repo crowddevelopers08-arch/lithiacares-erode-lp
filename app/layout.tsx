@@ -120,6 +120,26 @@ export default function RootLayout({
           />
         </noscript>
 
+        {/* Google Ads Click-to-Call Conversion Event */}
+        <Script id="google-ads-click-to-call" strategy="afterInteractive">
+          {`
+            function gtag_report_conversion(url) {
+              var callback = function () {
+                if (typeof(url) != 'undefined') {
+                  window.location = url;
+                }
+              };
+              gtag('event', 'conversion', {
+                  'send_to': 'AW-17425479208/I34aCJ2_wMMcEKjsjvVA',
+                  'value': 1.0,
+                  'currency': 'INR',
+                  'event_callback': callback
+              });
+              return false;
+            }
+          `}
+        </Script>
+
         {children}
       </body>
     </html>
